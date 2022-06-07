@@ -402,6 +402,8 @@
   #include "lpc1768/pins_BTT_SKR_V1_3.h"        // LPC1768                                env:LPC1768
 #elif MB(BTT_SKR_V1_4)
   #include "lpc1768/pins_BTT_SKR_V1_4.h"        // LPC1768                                env:LPC1768
+#elif MB(BTT_SKR_E3_TURBO)
+  #include "lpc1769/pins_BTT_SKR_E3_TURBO.h"    // LPC1769                                env:LPC1769
 
 //
 // LPC1769 ARM Cortex M3
