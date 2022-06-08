@@ -203,6 +203,7 @@
  */
 void GcodeSuite::G28() {
   DEBUG_SECTION(log_G28, "G28", DEBUGGING(LEVELING));
+  ui.set_status("G28 Auto Home Started", true);
   if (DEBUGGING(LEVELING)) log_machine_info();
 
   TERN_(LASER_MOVE_G28_OFF, cutter.set_inline_enabled(false));  // turn off laser
@@ -612,4 +613,5 @@ void GcodeSuite::G28() {
       L64xxManager.set_param((L64XX_axis_t)cv, L6470_ABS_POS, stepper.position(L64XX_axis_xref[cv]));
     }
   #endif
+  ui.set_status("G28 Auto Home Completed", true);
 }

@@ -40,7 +40,7 @@
 //
 // Servos
 //
-#define SERVO0_PIN                         P1_23
+//define SERVO0_PIN                         P1_23
 
 //
 // TMC StallGuard DIAG pins
@@ -61,7 +61,7 @@
 // Z Probe
 //
 #ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN                  P1_22
+  #define Z_MIN_PROBE_PIN                  P1_23
 #endif
 
 //
@@ -250,7 +250,7 @@
     #define LCD_PINS_D5              EXP1_06_PIN
     #define LCD_PINS_D6              EXP1_08_PIN
     #define LCD_PINS_D7              EXP1_10_PIN
-    #define ADC_KEYPAD_PIN                 P1_23  // Repurpose servo pin for ADC - CONNECTING TO 5V WILL DAMAGE THE BOARD!
+    //#define ADC_KEYPAD_PIN                 P1_23  // Repurpose servo pin for ADC - CONNECTING TO 5V WILL DAMAGE THE BOARD!
 
   #elif EITHER(MKS_MINI_12864, ENDER2_STOCKDISPLAY)
 
