@@ -4,6 +4,9 @@
 <p>Branch SPRITE is for Ender 3 with Sprite Pro, linear X rail, CR Touch and SKR E3 Turbo</p>
 <p>Master is for Ender 3 with stock hot end, linear x rail, Tronxy TR sensor and SKR E3 Turbo </p>
 
+<h3>Code changes over Marlin:</h3>
+<ul>Added status screen update for G28 start and end since z homing takes a while and it's hard to tell with the leadscrews if the printer is actually doing something.</ul>
+
 <p>To build, use gitpod:</p>
 <pre>
 git checkout SPRITE
