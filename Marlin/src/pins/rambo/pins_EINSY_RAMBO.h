@@ -53,6 +53,7 @@
 //
 // SERVO0_PIN and Z_MIN_PIN configuration for BLTOUCH sensor when combined with SENSORLESS_HOMING.
 //
+#define Z_MIN_PIN 11
 
 #if DISABLED(SENSORLESS_HOMING)
 
