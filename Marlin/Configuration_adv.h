@@ -839,9 +839,9 @@
 
 #define HOMING_BACKOFF_POST_MM { 0, 0, 0 }  // (linear=mm, rotational=°) Backoff from endstops after homing
 
-//#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
+#define QUICK_HOME                          // If G28 contains XY do a diagonal move first
 //#define HOME_Y_BEFORE_X                     // If G28 contains XY home Y before X
-//#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
+#define HOME_Z_FIRST                        // Home Z first. Requires a Z-MIN endstop (not a probe).
 //#define CODEPENDENT_XY_HOMING               // If X/Y can't home without homing Y/X first
 
 // @section bltouch
@@ -2754,10 +2754,10 @@
   #define INTERPOLATE      true
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       920        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       960        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
-    #define X_RSENSE          0.12
+    #define X_RSENSE          0.22
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -2767,17 +2767,17 @@
     #define X2_CURRENT      X_CURRENT
     #define X2_CURRENT_HOME X2_CURRENT
     #define X2_MICROSTEPS    X_MICROSTEPS
-    #define X2_RSENSE         0.12
+    #define X2_RSENSE         X_RSENSE
     #define X2_CHAIN_POS     -1
     //#define X2_INTERPOLATE true
     //#define X2_HOLD_MULTIPLIER 0.5
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       920
+    #define Y_CURRENT       960
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     16
-    #define Y_RSENSE          0.12
+    #define Y_RSENSE          X_RSENSE
     #define Y_CHAIN_POS      -1
     //#define Y_INTERPOLATE  true
     //#define Y_HOLD_MULTIPLIER 0.5
@@ -2787,7 +2787,7 @@
     #define Y2_CURRENT      Y_CURRENT
     #define Y2_CURRENT_HOME Y2_CURRENT
     #define Y2_MICROSTEPS    Y_MICROSTEPS
-    #define Y2_RSENSE         0.11
+    #define Y2_RSENSE         X_RSENSE
     #define Y2_CHAIN_POS     -1
     //#define Y2_INTERPOLATE true
     //#define Y2_HOLD_MULTIPLIER 0.5
@@ -2797,7 +2797,7 @@
     #define Z_CURRENT       800
     #define Z_CURRENT_HOME   Z_CURRENT
     #define Z_MICROSTEPS     32
-    #define Z_RSENSE          0.12
+    #define Z_RSENSE          X_RSENSE
     #define Z_CHAIN_POS      -1
     //#define Z_INTERPOLATE  true
     //#define Z_HOLD_MULTIPLIER 0.5
@@ -2814,10 +2814,10 @@
   #endif
 
   #if AXIS_IS_TMC(Z3)
-    #define Z3_CURRENT      800
+    #define Z3_CURRENT      Z_CURRENT
     #define Z3_CURRENT_HOME Z3_CURRENT
     #define Z3_MICROSTEPS    Z_MICROSTEPS
-    #define Z3_RSENSE         0.11
+    #define Z3_RSENSE         X_RSENSE
     #define Z3_CHAIN_POS     -1
     //#define Z3_INTERPOLATE true
     //#define Z3_HOLD_MULTIPLIER 0.5
@@ -2837,7 +2837,7 @@
     #define I_CURRENT      800
     #define I_CURRENT_HOME I_CURRENT
     #define I_MICROSTEPS    16
-    #define I_RSENSE         0.11
+    #define I_RSENSE         X_RSENSE
     #define I_CHAIN_POS     -1
     //#define I_INTERPOLATE  true
     //#define I_HOLD_MULTIPLIER 0.5
@@ -2847,7 +2847,7 @@
     #define J_CURRENT      800
     #define J_CURRENT_HOME J_CURRENT
     #define J_MICROSTEPS    16
-    #define J_RSENSE         0.11
+    #define J_RSENSE         X_RSENSE
     #define J_CHAIN_POS     -1
     //#define J_INTERPOLATE  true
     //#define J_HOLD_MULTIPLIER 0.5
@@ -2857,7 +2857,7 @@
     #define K_CURRENT      800
     #define K_CURRENT_HOME K_CURRENT
     #define K_MICROSTEPS    16
-    #define K_RSENSE         0.11
+    #define K_RSENSE         X_RSENSE
     #define K_CHAIN_POS     -1
     //#define K_INTERPOLATE  true
     //#define K_HOLD_MULTIPLIER 0.5
@@ -2867,7 +2867,7 @@
     #define U_CURRENT      800
     #define U_CURRENT_HOME U_CURRENT
     #define U_MICROSTEPS     8
-    #define U_RSENSE         0.11
+    #define U_RSENSE         X_RSENSE
     #define U_CHAIN_POS     -1
     //#define U_INTERPOLATE  true
     //#define U_HOLD_MULTIPLIER 0.5
@@ -2877,7 +2877,7 @@
     #define V_CURRENT      800
     #define V_CURRENT_HOME V_CURRENT
     #define V_MICROSTEPS     8
-    #define V_RSENSE         0.11
+    #define V_RSENSE         X_RSENSE
     #define V_CHAIN_POS     -1
     //#define V_INTERPOLATE  true
     //#define V_HOLD_MULTIPLIER 0.5
@@ -2887,7 +2887,7 @@
     #define W_CURRENT      800
     #define W_CURRENT_HOME W_CURRENT
     #define W_MICROSTEPS     8
-    #define W_RSENSE         0.11
+    #define W_RSENSE         X_RSENSE
     #define W_CHAIN_POS     -1
     //#define W_INTERPOLATE  true
     //#define W_HOLD_MULTIPLIER 0.5
@@ -2896,7 +2896,7 @@
   #if AXIS_IS_TMC(E0)
     #define E0_CURRENT      960
     #define E0_MICROSTEPS    16
-    #define E0_RSENSE         0.12
+    #define E0_RSENSE         X_RSENSE
     #define E0_CHAIN_POS     -1
     //#define E0_INTERPOLATE true
     //#define E0_HOLD_MULTIPLIER 0.5
@@ -2905,7 +2905,7 @@
   #if AXIS_IS_TMC(E1)
     #define E1_CURRENT      800
     #define E1_MICROSTEPS   E0_MICROSTEPS
-    #define E1_RSENSE         0.11
+    #define E1_RSENSE         X_RSENSE
     #define E1_CHAIN_POS     -1
     //#define E1_INTERPOLATE true
     //#define E1_HOLD_MULTIPLIER 0.5
@@ -2914,7 +2914,7 @@
   #if AXIS_IS_TMC(E2)
     #define E2_CURRENT      800
     #define E2_MICROSTEPS   E0_MICROSTEPS
-    #define E2_RSENSE         0.11
+    #define E2_RSENSE         X_RSENSE
     #define E2_CHAIN_POS     -1
     //#define E2_INTERPOLATE true
     //#define E2_HOLD_MULTIPLIER 0.5
@@ -2923,7 +2923,7 @@
   #if AXIS_IS_TMC(E3)
     #define E3_CURRENT      800
     #define E3_MICROSTEPS   E0_MICROSTEPS
-    #define E3_RSENSE         0.11
+    #define E3_RSENSE         X_RSENSE
     #define E3_CHAIN_POS     -1
     //#define E3_INTERPOLATE true
     //#define E3_HOLD_MULTIPLIER 0.5
@@ -2932,7 +2932,7 @@
   #if AXIS_IS_TMC(E4)
     #define E4_CURRENT      800
     #define E4_MICROSTEPS   E0_MICROSTEPS
-    #define E4_RSENSE         0.11
+    #define E4_RSENSE         X_RSENSE
     #define E4_CHAIN_POS     -1
     //#define E4_INTERPOLATE true
     //#define E4_HOLD_MULTIPLIER 0.5
@@ -2941,7 +2941,7 @@
   #if AXIS_IS_TMC(E5)
     #define E5_CURRENT      800
     #define E5_MICROSTEPS   E0_MICROSTEPS
-    #define E5_RSENSE         0.11
+    #define E5_RSENSE         X_RSENSE
     #define E5_CHAIN_POS     -1
     //#define E5_INTERPOLATE true
     //#define E5_HOLD_MULTIPLIER 0.5
@@ -2950,7 +2950,7 @@
   #if AXIS_IS_TMC(E6)
     #define E6_CURRENT      800
     #define E6_MICROSTEPS   E0_MICROSTEPS
-    #define E6_RSENSE         0.11
+    #define E6_RSENSE         X_RSENSE
     #define E6_CHAIN_POS     -1
     //#define E6_INTERPOLATE true
     //#define E6_HOLD_MULTIPLIER 0.5
@@ -2959,7 +2959,7 @@
   #if AXIS_IS_TMC(E7)
     #define E7_CURRENT      800
     #define E7_MICROSTEPS   E0_MICROSTEPS
-    #define E7_RSENSE         0.11
+    #define E7_RSENSE         X_RSENSE
     #define E7_CHAIN_POS     -1
     //#define E7_INTERPOLATE true
     //#define E7_HOLD_MULTIPLIER 0.5
@@ -3179,10 +3179,10 @@
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
-    #define X_STALL_SENSITIVITY  8
-    #define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
-    #define Y_STALL_SENSITIVITY  8
-    #define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
+    //#define X_STALL_SENSITIVITY  8
+    //#define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
+    //#define Y_STALL_SENSITIVITY  8
+    //#define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
     #define Z_STALL_SENSITIVITY  4
     #define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define Z3_STALL_SENSITIVITY Z_STALL_SENSITIVITY
@@ -3988,7 +3988,7 @@
   #define CUSTOM_MENU_MAIN_ONLY_IDLE         // Only show custom menu when the machine is idle
 
   #define MAIN_MENU_ITEM_1_DESC "Pre-heat and wipe"
-  #define MAIN_MENU_ITEM_1_GCODE "M117 Pre-heating " STRINGIFY(PREHEAT_1_LABEL) "\nM140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM117 Homing...\nG28\nM117 Wiping...\nG12 P1 S1 T3"
+  #define MAIN_MENU_ITEM_1_GCODE "M117 Pre-heating " STRINGIFY(PREHEAT_1_LABEL) "\nM140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM117 Homing...\nG28\nM117 Wiping...\nG12 P1 S1 T3\nM77"
   #define MAIN_MENU_ITEM_1_CONFIRM          // Show a confirmation dialog before this action
 
   //#define MAIN_MENU_ITEM_2_DESC "Preheat for " PREHEAT_1_LABEL

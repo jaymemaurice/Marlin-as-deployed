@@ -53,27 +53,12 @@
 //
 // SERVO0_PIN and Z_MIN_PIN configuration for BLTOUCH sensor when combined with SENSORLESS_HOMING.
 //
-#define Z_MIN_PIN 11
+//#define Z_MIN_PROBE_PIN 10
+#define Y_STOP_PIN 11
+#define X_STOP_PIN 12
+#define Z_MAX_PIN                  Z_DIAG_PIN
 
-#if DISABLED(SENSORLESS_HOMING)
 
-  #define X_STOP_PIN                          12
-  #define Y_STOP_PIN                          11
-  #define Z_STOP_PIN                          10
-
-#else
-
-  #define X_STOP_PIN                  X_DIAG_PIN
-  #define Y_STOP_PIN                  Y_DIAG_PIN
-
-  #if ENABLED(BLTOUCH)
-    #define Z_STOP_PIN                        11  // Y-MIN
-    #define SERVO0_PIN                        10  // Z-MIN
-  #else
-    #define Z_STOP_PIN                        10
-  #endif
-
-#endif
 
 //
 // Z Probe (when not Z_MIN_PIN)

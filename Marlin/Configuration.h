@@ -1165,7 +1165,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+//#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 //#define USE_PROBE_FOR_Z_HOMING
@@ -1185,7 +1185,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-#define Z_MIN_PROBE_PIN 11 // Pin 32 is the RAMPS default
+#define Z_MIN_PROBE_PIN 10 // Pin 32 is the RAMPS default
 
 /**
  * Probe Type
@@ -2129,8 +2129,8 @@
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #define NOZZLE_CLEAN_START_POINT { 40 + 0, 177 + 0, 2.8 }
-  #define NOZZLE_CLEAN_END_POINT   { 125 + 0, 182 + 0, 2.8 }
+  #define NOZZLE_CLEAN_START_POINT { 35 + 0, 177 + 0, .8 }
+  #define NOZZLE_CLEAN_END_POINT   { 114 + 0, 182 + 0, .8 }
 
   // Circular pattern radius
   #define NOZZLE_CLEAN_CIRCLE_RADIUS 6.5
