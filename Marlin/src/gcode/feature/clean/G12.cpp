@@ -50,6 +50,10 @@ void GcodeSuite::G12() {
   constexpr main_axes_bits_t clean_axis_mask = main_axes_mask & ~TERN0(NOZZLE_CLEAN_NO_Z, Z_AXIS) & ~TERN0(NOZZLE_CLEAN_NO_Y, Y_AXIS);
   if (homing_needed_error(clean_axis_mask)) return;
 
+  #ifdef WIPE_SEQUENCE_PRE_COMMANDS
+    process_subcommands_now(F(WIPE_SEQUENCE_PRE_COMMANDS));
+  #endif
+  
   #ifdef WIPE_SEQUENCE_COMMANDS
     if (!parser.seen_any()) {
       process_subcommands_now(F(WIPE_SEQUENCE_COMMANDS));
@@ -67,6 +71,9 @@ void GcodeSuite::G12() {
                         | (!seenxyz || parser.boolval('Y') ? _BV(Y_AXIS) : 0)
                         | TERN(NOZZLE_CLEAN_NO_Z, 0, (!seenxyz || parser.boolval('Z') ? _BV(Z_AXIS) : 0))
                       ;
+  #ifdef WIPE_SEQUENCE_POST_COMMANDS
+    process_subcommands_now(F(WIPE_SEQUENCE_POST_COMMANDS));
+  #endif
 
   #if HAS_LEVELING
     // Disable bed leveling if cleaning Z
