@@ -52,8 +52,8 @@
   // Include all core headers
   #include "../core/language.h"
   #include "../core/utility.h"
-  #include "../core/serial.h"
-
+  #include "../core/serial.h"  
 #endif
 
+#include "../drunken_octopus_extras.h"
 #include "../core/multi_language.h"

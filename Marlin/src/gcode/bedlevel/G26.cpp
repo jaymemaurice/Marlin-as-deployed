@@ -99,6 +99,10 @@
 
 #if ENABLED(G26_MESH_VALIDATION)
 
+#ifdef G26_IN_START_GCODE_WORKAROUND
+  #include "../../module/printcounter.h"
+#endif
+
 #define G26_OK false
 #define G26_ERR true
 
@@ -503,11 +507,20 @@ typedef struct {
  *  Y  Y position
  */
 void GcodeSuite::G26() {
+  #ifdef G26_IN_START_GCODE_WORKAROUND
+    if(print_job_timer.isRunning()) {
+      SERIAL_ECHOLNPGM("WARNING: G26 in the start GCODE is deprecated. Please remove it.");
+      return;
+    }
+  #endif
+
   SERIAL_ECHOLNPGM("G26 starting...");
 
   // Don't allow Mesh Validation without homing first,
   // or if the parameter parsing did not go OK, abort
   if (homing_needed_error()) return;
+
+  TERN_(START_PRINT_TIMER_ON_G26, AutoPrintTimer t);
 
   // Change the tool first, if specified
   if (parser.seenval('T')) tool_change(parser.value_int());

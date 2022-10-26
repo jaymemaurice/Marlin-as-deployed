@@ -1561,6 +1561,10 @@ void setup() {
     SETUP_RUN(est_init());
   #endif
 
+  #if ELECTROMAGNETIC_BRAKE_PIN
+    SETUP_RUN(em_brake_init());
+  #endif
+
   #if ENABLED(USE_WATCHDOG)
     SETUP_RUN(hal.watchdog_init());   // Reinit watchdog after hal.get_reset_source call
   #endif

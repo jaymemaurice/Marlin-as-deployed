@@ -130,6 +130,21 @@
   #define Z_CS_PIN                            45  // PC18 Z_nCS
 #endif
 
+#if defined(SWAP_E0_AND_E1)
+#define E1_STEP_PIN                          107  // PB10 E1-STEP -AddOns *
+#define E1_DIR_PIN                            96  // PC10 E1-DIR -AddOns *
+#define E1_ENABLE_PIN                        105  // PB22 E1-EN -AddOns *
+#ifndef E1_CS_PIN
+  #define E1_CS_PIN                          104  // PC20 E1_nCS -AddOns *
+#endif
+
+#define E0_STEP_PIN                           22  // PB26 E2_STEP *
+#define E0_DIR_PIN                            97  // PB24 E2_DIR -AddOns *
+#define E0_ENABLE_PIN                         18  // PA11 E2-EN
+#ifndef E0_CS_PIN
+#define E0_CS_PIN                             19  // PA10 E2_nCS
+#endif
+#else // SWAP_E0_AND_E1
 #define E0_STEP_PIN                          107  // PB10 E1-STEP -AddOns *
 #define E0_DIR_PIN                            96  // PC10 E1-DIR -AddOns *
 #define E0_ENABLE_PIN                        105  // PB22 E1-EN -AddOns *
@@ -141,7 +156,32 @@
 #define E1_DIR_PIN                            97  // PB24 E2_DIR -AddOns *
 #define E1_ENABLE_PIN                         18  // PA11 E2-EN
 #ifndef E1_CS_PIN
-  #define E1_CS_PIN                           19  // PA10 E2_nCS
+#define E1_CS_PIN                             19  // PA10 E2_nCS
+#endif
+#endif
+
+#if NUM_Z_STEPPER_DRIVERS == 2
+  // SynDaver AXI w/ dual Z steppers: Plug Z-left into E2, plug Z-right into Z.
+
+  #undef Z_STEP_PIN
+  #undef Z_DIR_PIN
+  #undef Z_ENABLE_PIN
+  #undef Z_CS_PIN
+
+  #undef E1_STEP_PIN
+  #undef E1_DIR_PIN
+  #undef E1_ENABLE_PIN
+  #undef E1_CS_PIN
+
+  #define Z_STEP_PIN                           22  // PB26 E2_STEP *
+  #define Z_DIR_PIN                            97  // PB24 E2_DIR -AddOns *
+  #define Z_ENABLE_PIN                         18  // PA11 E2-EN
+  #define Z_CS_PIN                             19  // PA10 E2_nCS
+
+  #define Z2_STEP_PIN                          46  // PC17 Z-STEP *
+  #define Z2_DIR_PIN                           47  // PC16 Z-DIR *
+  #define Z2_ENABLE_PIN                        44  // PC19 Z-END *
+  #define Z2_CS_PIN                            45  // PC18 Z_nCS
 #endif
 
 //
@@ -163,23 +203,56 @@
 //
 // Temperature Sensors
 //
+#if defined(SWAP_E0_AND_E1)
+#define TEMP_1_PIN                            10  // D10 PB19 THERM AN1 *
+#define TEMP_0_PIN                             9  // D9 PB18 THERM AN2 *
+#else // SWAP_E0_AND_E1
 #define TEMP_0_PIN                            10  // D10 PB19 THERM AN1 *
 #define TEMP_1_PIN                             9  // D9 PB18 THERM AN2 *
+#endif
+#if defined(TEMP_SENSOR_CHAMBER)
+#define TEMP_CHAMBER_PIN                       8  // D8 PB17 THERM AN4 *
+#else
 #define TEMP_2_PIN                             8  // D8 PB17 THERM AN4 *
+#endif
 #define TEMP_BED_PIN                          11  // D11 PB20 THERM AN3 *
 
 //
 // Heaters / Fans
 //
-#define HEATER_0_PIN                           6  // D6 PC24 FET_PWM3
-#define HEATER_1_PIN                           7  // D7 PC23 FET_PWM4
-#define HEATER_2_PIN                           8  // D8 PC22 FET_PWM5
-#define HEATER_BED_PIN                         9  // D9 PC21 BED_PWM
-
-#ifndef FAN_PIN
-  #define FAN_PIN                              4  // D4 PC26 FET_PWM1
+#if defined(SWAP_E0_AND_E1)
+  #define HEATER_0_PIN                         7  // D7 PC23 FET_PWM4 ("HTR2" header)
+  #define HEATER_1_PIN                         6  // D6 PC24 FET_PWM3 ("HTR1" header)
+#else // SWAP_E0_AND_E1
+  #define HEATER_0_PIN                         6  // D6 PC24 FET_PWM3 ("HTR1" header)
+  #define HEATER_1_PIN                         7  // D7 PC23 FET_PWM4 ("HTR2" header)
 #endif
-#define FAN1_PIN                               5  // D5 PC25 FET_PWM2
+//#define HEATER_2_PIN                         8  // D8 PC22 FET_PWM5 ("HTR3" header)
+#define HEATER_BED_PIN                         9  // D9 PC21 BED_PWM  ("HTBD" header)
+
+#if defined(SWAP_EXTRUDER_FANS)
+  #define FAN_PIN                              8  // D8 PC22 FET_PWM5 ("HTR3" header)
+  #define FAN1_PIN                             4  // D4 PC26 FET_PWM1 ("FAN1" header)
+#else
+  #define FAN_PIN                              4  // D4 PC26 FET_PWM1 ("FAN1" header)
+  #ifndef FAN1_PIN
+  #define FAN1_PIN                             8  // D8 PC22 FET_PWM5 ("HTR3" header)
+  #endif
+#endif
+
+#ifndef CONTROLLER_FAN_PIN
+  #define CONTROLLER_FAN_PIN                   5  // D5 PC25 FET_PWM2 ("FAN2" header)
+#endif
+
+#if ENABLED(CASE_LIGHT_ENABLE)
+  #undef  HEATER_1_PIN
+  #define CASE_LIGHT_PIN                       7  // D7 PC23 FET_PWM4 ("HTR2" header)
+#endif
+
+#if ENABLED(USE_ELECTROMAGNETIC_BRAKE)
+  #undef  FAN1_PIN
+  #define ELECTROMAGNETIC_BRAKE_PIN            8  // D8 PC22 FET_PWM5 ("HTR3" header)
+#endif
 
 //
 // Misc. Functions

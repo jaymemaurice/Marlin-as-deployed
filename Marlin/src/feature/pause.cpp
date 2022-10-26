@@ -512,7 +512,9 @@ void wait_for_confirmation(const bool is_reload/*=false*/, const int8_t max_beep
 
   show_continue_prompt(is_reload);
 
+  #if DISABLED(TOUCH_UI_FILAMENT_RUNOUT_WORKAROUNDS)
   first_impatient_beep(max_beep_count);
+  #endif
 
   // Start the heater idle timers
   const millis_t nozzle_timeout = SEC_TO_MS(PAUSE_PARK_NOZZLE_TIMEOUT);
@@ -528,10 +530,16 @@ void wait_for_confirmation(const bool is_reload/*=false*/, const int8_t max_beep
   // Wait for filament insert by user and press button
   KEEPALIVE_STATE(PAUSED_FOR_USER);
   TERN_(HOST_PROMPT_SUPPORT, hostui.prompt_do(PROMPT_USER_CONTINUE, GET_TEXT_F(MSG_NOZZLE_PARKED), FPSTR(CONTINUE_STR)));
+  #if ENABLED(TOUCH_UI_FILAMENT_RUNOUT_WORKAROUNDS)
+  TERN_(EXTENSIBLE_UI, ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_PRINT_PAUSED)));
+  #else
   TERN_(EXTENSIBLE_UI, ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_NOZZLE_PARKED)));
+  #endif
   wait_for_user = true;    // LCD click or M108 will clear this
   while (wait_for_user) {
+    #if DISABLED(TOUCH_UI_FILAMENT_RUNOUT_WORKAROUNDS)
     impatient_beep(max_beep_count);
+    #endif
 
     // If the nozzle has timed out...
     if (!nozzle_timed_out)
@@ -630,8 +638,18 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   if (targetTemp > thermalManager.degTargetHotend(active_extruder))
     thermalManager.setTargetHotend(targetTemp, active_extruder);
 
-  // Load the new filament
-  load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out, PAUSE_MODE_SAME DXC_PASS);
+  #if ENABLED(TOUCH_UI_FILAMENT_RUNOUT_WORKAROUNDS)
+    #if DISABLED(TOUCH_UI_SYNDAVER_LEVEL)
+      ExtUI::onStatusChanged(GET_TEXT(MSG_FILAMENT_CHANGE_RESUME));
+    #endif
+    UNUSED(slow_load_length);
+    UNUSED(fast_load_length);
+    UNUSED(purge_length);
+    UNUSED(max_beep_count);
+  #else
+    // Load the new filament
+    load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out, PAUSE_MODE_SAME DXC_PASS);
+  #endif
 
   if (targetTemp > 0) {
     thermalManager.setTargetHotend(targetTemp, active_extruder);

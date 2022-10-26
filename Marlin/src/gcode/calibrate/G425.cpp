@@ -850,6 +850,10 @@ void GcodeSuite::G425() {
 
   if (homing_needed_error()) return;
 
+  #if ENABLED(EMI_MITIGATION) && ENABLED(NOZZLE_AS_PROBE)
+   enable_emi_pins(true);
+  #endif
+
   TEMPORARY_BED_LEVELING_STATE(false);
   SET_SOFT_ENDSTOP_LOOSE(true);
 
@@ -877,6 +881,10 @@ void GcodeSuite::G425() {
   #endif
   else
     calibrate_all();
+
+  #if ENABLED(EMI_MITIGATION) && ENABLED(NOZZLE_AS_PROBE)
+   enable_emi_pins(false);
+  #endif
 
   SET_SOFT_ENDSTOP_LOOSE(false);
 

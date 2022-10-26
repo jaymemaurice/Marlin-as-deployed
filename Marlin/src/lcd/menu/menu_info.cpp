@@ -255,6 +255,9 @@ void menu_info_board() {
     STATIC_ITEM_F(F(SHORT_BUILD_VERSION));                        // x.x.x-Branch
     STATIC_ITEM_F(F(STRING_DISTRIBUTION_DATE));                   // YYYY-MM-DD HH:MM
     STATIC_ITEM_F(F(MACHINE_NAME), SS_DEFAULT|SS_INVERT);         // My3DPrinter
+    #ifdef TOOLHEAD_NAME
+      STATIC_ITEM_F(F(TOOLHEAD_NAME));                       // Single Extruder
+    #endif
     STATIC_ITEM_F(F(WEBSITE_URL));                                // www.my3dprinter.com
     PSTRING_ITEM(MSG_INFO_EXTRUDERS, STRINGIFY(EXTRUDERS), SS_CENTER); // Extruders: 2
     #if HAS_LEVELING

@@ -230,6 +230,14 @@ enum StealthIndex : uint8_t {
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
+    #if ENABLED(Z2_PRESENCE_CHECK)
+    if(has_z2_jumper() && AXIS_ID == Z_AXIS) {
+        // If the printer has a Z2 jumper configured, then set the current to half
+        // because the current is split among two motors.
+        st.rms_current(mA / 2, hold_multiplier);
+    }
+    else
+    #endif
     st.rms_current(mA, hold_multiplier);
     st.microsteps(microsteps);
     st.iholddelay(10);

@@ -49,6 +49,9 @@ void GcodeSuite::G0_G1(TERN_(HAS_FAST_MOVES, const bool fast_move/*=false*/)) {
   if (IsRunning()
     #if ENABLED(NO_MOTION_BEFORE_HOMING)
       && !homing_needed_error(
+        #if ENABLED(NO_MOTION_BEFORE_HOMING_WORKAROUND)
+        parser.seen('U') ? 0 :
+        #endif
         NUM_AXIS_GANG(
             (parser.seen_test('X') ? _BV(X_AXIS) : 0),
           | (parser.seen_test('Y') ? _BV(Y_AXIS) : 0),

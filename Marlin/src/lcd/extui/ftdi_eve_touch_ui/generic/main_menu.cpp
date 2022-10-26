@@ -109,7 +109,21 @@ bool MainMenu::onTouchEnd(uint8_t tag) {
       case 3: injectCommands(F("G12")); GOTO_SCREEN(StatusScreen); break;
     #endif
     case 4:  GOTO_SCREEN(MoveAxisScreen);                             break;
-    case 5:  injectCommands(F("M84"));                           break;
+    case 5:  injectCommands(F("M84"
+            #if DISABLE_INACTIVE_X
+                " X"
+            #endif
+            #if DISABLE_INACTIVE_Y
+                " Y"
+            #endif
+            #if DISABLE_INACTIVE_Z
+                " Z"
+            #endif
+            #if DISABLE_INACTIVE_E
+                " E"
+            #endif
+        ));
+        break;
     case 6:  GOTO_SCREEN(TemperatureScreen);                          break;
     case 7:  GOTO_SCREEN(ChangeFilamentScreen);                       break;
     case 8:  GOTO_SCREEN(AdvancedSettingsMenu);                       break;

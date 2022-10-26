@@ -307,7 +307,7 @@ void GcodeSuite::G34() {
           #endif
         );
 
-        #if HAS_STATUS_MESSAGE
+        #if HAS_STATUS_MESSAGE && 0
           char fstr1[10];
           char msg[6 + (6 + 5) * NUM_Z_STEPPERS + 1]
             #if TRIPLE_Z

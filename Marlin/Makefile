@@ -127,14 +127,14 @@ NEOPIXEL           ?= 0
 # on GCC versions:
 #   https://www.avrfreaks.net/comment/1789106#comment-1789106
 
-CC_MAJ:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC__ | cut -f3 -d\ )
-CC_MIN:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC_MINOR__ | cut -f3 -d\ )
-CC_PATCHLEVEL:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC_PATCHLEVEL__ | cut -f3 -d\ )
-CC_VER:=$(shell echo $$(( $(CC_MAJ) * 10000 + $(CC_MIN) * 100 + $(CC_PATCHLEVEL) )))
-ifeq ($(shell test $(CC_VER) -lt 40901 && echo 1),1)
-  $(warning This GCC version $(CC_VER) is likely broken. Enabling relocation workaround.)
-  RELOC_WORKAROUND = 1
-endif
+#CC_MAJ:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC__ | cut -f3 -d\ )
+#CC_MIN:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC_MINOR__ | cut -f3 -d\ )
+#CC_PATCHLEVEL:=$(shell $(CC) -dM -E - < /dev/null | grep __GNUC_PATCHLEVEL__ | cut -f3 -d\ )
+#CC_VER:=$(shell echo $$(( $(CC_MAJ) * 10000 + $(CC_MIN) * 100 + $(CC_PATCHLEVEL) )))
+#ifeq ($(shell test $(CC_VER) -lt 40901 && echo 1),1)
+#  $(warning This GCC version $(CC_VER) is likely broken. Enabling relocation workaround.)
+#  RELOC_WORKAROUND = 1
+#endif
 
 ############################################################################
 # Below here nothing should be changed...
@@ -636,7 +636,7 @@ endif
 # that derives from that, and their source are present in
 # the main Marlin source directory
 
-TARGET = $(notdir $(CURDIR))
+TARGET = marlin
 
 # VPATH tells make to look into these directory for source files,
 # there is no need to specify explicit pathnames as long as the
@@ -686,10 +686,8 @@ ifeq ($(NEOPIXEL), 1)
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/Adafruit_NeoPixel
 endif
 ifeq ($(U8GLIB), 1)
-VPATH += $(ARDUINO_INSTALL_DIR)/libraries/U8glib
-VPATH += $(ARDUINO_INSTALL_DIR)/libraries/U8glib/csrc
-VPATH += $(ARDUINO_INSTALL_DIR)/libraries/U8glib/cppsrc
-VPATH += $(ARDUINO_INSTALL_DIR)/libraries/U8glib/fntsrc
+VPATH += lib/U8glib-HAL-master/src
+VPATH += lib/U8glib-HAL-master/src/clib
 endif
 ifeq ($(TMC), 1)
 VPATH += $(ARDUINO_INSTALL_DIR)/libraries/TMCStepper/src
@@ -757,10 +755,9 @@ ifeq ($(TONE), 1)
 endif
 
 ifeq ($(U8GLIB), 1)
-  LIB_CXXSRC += U8glib.cpp
-  LIB_SRC += u8g_ll_api.c u8g_bitmap.c u8g_clip.c u8g_com_null.c u8g_delay.c \
-    u8g_page.c u8g_pb.c u8g_pb16h1.c u8g_rect.c u8g_state.c u8g_font.c \
-    u8g_font_6x13.c u8g_font_04b_03.c u8g_font_5x8.c
+  LIB_CXXSRC += U8glib-HAL.cpp u8g_delay.cpp
+  LIB_SRC += u8g_ll_api.c u8g_bitmap.c u8g_clip.c u8g_com_null.c \
+    u8g_page.c u8g_pb.c u8g_pb16h1.c u8g_rect.c u8g_state.c u8g_font.c
 endif
 
 ifeq ($(TMC), 1)

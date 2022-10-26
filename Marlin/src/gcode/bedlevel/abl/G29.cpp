@@ -671,7 +671,11 @@ G29_TYPE GcodeSuite::G29() {
 
     #if ABL_USES_GRID
 
+      #if ENABLED(END_G29_ON_BACK_LEFT_CORNER)
+      bool zig = !(PR_OUTER_SIZE & 1);  // Always end at LEFT and BACK_PROBE_BED_POSITION
+      #else
       bool zig = PR_OUTER_SIZE & 1;  // Always end at RIGHT and BACK_PROBE_BED_POSITION
+      #endif
 
       // Outer loop is X with PROBE_Y_FIRST enabled
       // Outer loop is Y with PROBE_Y_FIRST disabled

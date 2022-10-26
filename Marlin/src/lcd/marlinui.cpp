@@ -1455,11 +1455,15 @@ void MarlinUI::init() {
     #endif
 
     FSTR_P msg;
+    #if DISABLED(TOUCH_UI_SYNDAVER_LEVEL)
     if (printingIsPaused())
       msg = GET_TEXT_F(MSG_PRINT_PAUSED);
     #if ENABLED(SDSUPPORT)
       else if (IS_SD_PRINTING())
         return set_status(card.longest_filename(), true);
+    #endif
+    #else
+    if(0);
     #endif
     else if (print_job_timer.isRunning())
       msg = GET_TEXT_F(MSG_PRINTING);
@@ -1836,7 +1840,9 @@ void MarlinUI::init() {
     pause_mode = mode;
     ExtUI::pauseModeStatus = message;
     switch (message) {
+      #if DISABLED(TOUCH_UI_SYNDAVER_LEVEL)
       case PAUSE_MESSAGE_PARKING:  ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_PAUSE_PRINT_PARKING)); break;
+      #endif
       case PAUSE_MESSAGE_CHANGING: ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_INIT)); break;
       case PAUSE_MESSAGE_UNLOAD:   ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_UNLOAD)); break;
       case PAUSE_MESSAGE_WAITING:  ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_ADVANCED_PAUSE_WAITING)); break;
@@ -1848,7 +1854,9 @@ void MarlinUI::init() {
       case PAUSE_MESSAGE_RESUME:   ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_RESUME)); break;
       case PAUSE_MESSAGE_HEAT:     ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_HEAT)); break;
       case PAUSE_MESSAGE_HEATING:  ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_HEATING)); break;
+      #if DISABLED(TOUCH_UI_SYNDAVER_LEVEL)
       case PAUSE_MESSAGE_OPTION:   ExtUI::onUserConfirmRequired(GET_TEXT_F(MSG_FILAMENT_CHANGE_OPTION_HEADER)); break;
+      #endif
       case PAUSE_MESSAGE_STATUS:   break;
       default: break;
     }

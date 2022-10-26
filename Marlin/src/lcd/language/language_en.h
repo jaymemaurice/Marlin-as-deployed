@@ -136,6 +136,7 @@ namespace Language_en {
   LSTR MSG_PREHEAT_CUSTOM                 = _UxGT("Preheat Custom");
   LSTR MSG_COOLDOWN                       = _UxGT("Cooldown");
 
+
   LSTR MSG_CUTTER_FREQUENCY               = _UxGT("Frequency");
   LSTR MSG_LASER_MENU                     = _UxGT("Laser Control");
   LSTR MSG_SPINDLE_MENU                   = _UxGT("Spindle Control");
@@ -302,6 +303,7 @@ namespace Language_en {
   LSTR MSG_INTENSITY_B                    = _UxGT("Blue Intensity");
   LSTR MSG_INTENSITY_W                    = _UxGT("White Intensity");
   LSTR MSG_LED_BRIGHTNESS                 = _UxGT("Brightness");
+
 
   LSTR MSG_MOVING                         = _UxGT("Moving...");
   LSTR MSG_FREE_XY                        = _UxGT("Free XY");
@@ -811,7 +813,7 @@ namespace Language_en {
   LSTR MSG_LEVEL_X_AXIS                   = _UxGT("Level X Axis");
   LSTR MSG_AUTO_CALIBRATE                 = _UxGT("Auto Calibrate");
   #if ENABLED(TOUCH_UI_FTDI_EVE)
-    LSTR MSG_HEATER_TIMEOUT               = _UxGT("Idle timeout, temperature decreased. Press Okay to reheat and again to resume.");
+    LSTR MSG_HEATER_TIMEOUT               = _UxGT("Idle timeout, temperature decreased. Press Okay and then resume to reheat. Please then wait in order to resume the print once the reheat is complete.");
   #else
     LSTR MSG_HEATER_TIMEOUT               = _UxGT("Heater Timeout");
   #endif

@@ -81,8 +81,9 @@ void LevelingMenu::onRedraw(draw_mode_t what) {
        .text(BLTOUCH_TITLE_POS, GET_TEXT_F(MSG_BLTOUCH))
     #endif
        .font(font_medium).colors(normal_btn)
-       .enabled(EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION))
+    #if EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION) || defined(AXIS_LEVELING_COMMANDS)
        .tag(2).button(LEVEL_AXIS_POS, GET_TEXT_F(MSG_LEVEL_X_AXIS))
+    #endif
        .enabled(ENABLED(HAS_BED_PROBE))
        .tag(3).button(PROBE_BED_POS, GET_TEXT_F(MSG_PROBE_BED))
        .enabled(ENABLED(HAS_MESH))
@@ -103,8 +104,22 @@ void LevelingMenu::onRedraw(draw_mode_t what) {
 bool LevelingMenu::onTouchEnd(uint8_t tag) {
   switch (tag) {
     case 1: GOTO_PREVIOUS(); break;
-    #if EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION)
-      case 2: SpinnerDialogBox::enqueueAndWait(F("G34")); break;
+    #if ENABLED(Z2_PRESENCE_CHECK)
+      case 2:
+        if(has_z2_jumper()) {
+          GOTO_SCREEN(StatusScreen);
+          ExtUI::injectCommands_P(PSTR("G34 A2 I20 T0.01"));
+        } else {
+          SpinnerDialogBox::enqueueAndWait(F(AXIS_LEVELING_COMMANDS));
+        }
+        break;
+    #elif defined(AXIS_LEVELING_COMMANDS)
+      case 2: SpinnerDialogBox::enqueueAndWait(F(AXIS_LEVELING_COMMANDS)); break;
+    #elif EITHER(Z_STEPPER_AUTO_ALIGN,MECHANICAL_GANTRY_CALIBRATION)
+      case 2:
+        GOTO_SCREEN(StatusScreen);
+        ExtUI::injectCommands_P(PSTR("G28 Z\nG34 A2 I20 T0.01"));
+        break;
     #endif
     #if HAS_BED_PROBE
       case 3:
