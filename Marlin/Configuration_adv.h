@@ -567,7 +567,7 @@
 #define FAST_PWM_FAN    // Increase the fan PWM frequency. Removes the PWM noise but increases heating in the FET/Arduino
 #if ENABLED(FAST_PWM_FAN)
   #define FAST_PWM_FAN_FREQUENCY 9770 
-  #define FAST_PWM_FAN_FREQUENCY 38 
+  //#define FAST_PWM_FAN_FREQUENCY 38 
   //#define USE_OCR2A_AS_TOP
   #ifndef FAST_PWM_FAN_FREQUENCY
     #ifdef __AVR__
@@ -2103,9 +2103,9 @@
    * Specify the GCODE commands that will be executed when leveling succeeds,
    * between attempts, and after the maximum number of retries have been tried.
    */
-  #define G29_SUCCESS_COMMANDS "M117 Bed leveling done."
-  #define G29_RECOVER_COMMANDS "M117 Probe failed. Rewiping.\nG12 P0 S12 T0"
-  #define G29_FAILURE_COMMANDS "M117 Bed leveling failed.\nG0 Z10\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nG4 S1"
+  #define G29_SUCCESS_COMMANDS "M117 Bed leveling done.\nG0 X100 Y100 Z20 F2000"
+  #define G29_RECOVER_COMMANDS "M117 Probe failed. Rewiping.\nG0 Z20\nG12 P0 S12 T0\nG0 Z20"
+  #define G29_FAILURE_COMMANDS "M117 Bed leveling failed.\nG0 Z20\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nM300 P25 S880\nM300 P50 S0\nG4 S1"
 
 #endif
 
@@ -2755,7 +2755,7 @@
   #define INTERPOLATE      true
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       960        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       1000        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
     #define X_RSENSE          0.22
@@ -2775,7 +2775,7 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       960
+    #define Y_CURRENT       1000
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     16
     #define Y_RSENSE          X_RSENSE
@@ -3052,7 +3052,7 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   #define STEALTHCHOP_XY
-  //#define STEALTHCHOP_Z
+  #define STEALTHCHOP_Z
   #define STEALTHCHOP_I
   #define STEALTHCHOP_J
   #define STEALTHCHOP_K
@@ -3214,7 +3214,7 @@
    * Beta feature!
    * Create a 50/50 square wave step pulse optimal for stepper drivers.
    */
-  //#define SQUARE_WAVE_STEPPING
+  #define SQUARE_WAVE_STEPPING
 
   /**
    * Enable M122 debugging command for TMC stepper drivers.
@@ -3989,7 +3989,7 @@
   #define CUSTOM_MENU_MAIN_ONLY_IDLE         // Only show custom menu when the machine is idle
 
   #define MAIN_MENU_ITEM_1_DESC "Pre-heat and wipe"
-  #define MAIN_MENU_ITEM_1_GCODE "M117 Pre-heating " STRINGIFY(PREHEAT_1_LABEL) "\nM140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM117 Homing...\nG28\nM117 Wiping...\nG12 P1 S1 T3\nM77"
+  #define MAIN_MENU_ITEM_1_GCODE "M117 Pre-heating " STRINGIFY(PREHEAT_1_LABEL) "\nM140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM109 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND) "\nM117 Homing...\nG28\nM117 Wiping...\nG12 P1 S1 T3\nG0 Z20 F2000\nM77"
   #define MAIN_MENU_ITEM_1_CONFIRM          // Show a confirmation dialog before this action
 
   //#define MAIN_MENU_ITEM_2_DESC "Preheat for " PREHEAT_1_LABEL
