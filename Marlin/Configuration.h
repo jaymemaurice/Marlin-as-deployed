@@ -1,4 +1,12 @@
-
+#define HOTENDS 1
+//#define HEATER_1_PIN HEATER_0_PIN
+//#define HEATER_2_PIN HEATER_0_PIN
+//#define HEATER_3_PIN HEATER_0_PIN
+//#define HEATER_4_PIN HEATER_0_PIN
+//#define TEMP_1_PIN TEMP_0_PIN
+//#define TEMP_2_PIN TEMP_0_PIN
+//#define TEMP_3_PIN TEMP_0_PIN
+//#define TEMP_4_PIN TEMP_0_PIN
 /**
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
@@ -98,7 +106,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_EINSY_RAMBO
+  #define MOTHERBOARD BOARD_EINSY_RETRO
 #endif
 
 #define M115_EXTRUDER_TYPE "HardenedExtruder"
@@ -564,10 +572,10 @@
  */
 #define TEMP_SENSOR_0 5
 #define TEMP_SENSOR_1 5
-#define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_3 0
-#define TEMP_SENSOR_4 0
-#define TEMP_SENSOR_5 0
+#define TEMP_SENSOR_2 5
+#define TEMP_SENSOR_3 5
+#define TEMP_SENSOR_4 5
+#define TEMP_SENSOR_5 5
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
 #define TEMP_SENSOR_BED 7
@@ -658,32 +666,128 @@
 
 // Enable PIDTEMP for PID control or MPCTEMP for Predictive Model.
 // temperature control. Disable both for bang-bang heating.
-//#define PIDTEMP          // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
-#define MPCTEMP        // ** EXPERIMENTAL **
+#define PIDTEMP          // See the PID Tuning Guide at https://reprap.org/wiki/PID_Tuning
+//#define MPCTEMP        // ** EXPERIMENTAL **
 
 #define BANG_MAX 255     // Limits current to nozzle while in bang-bang mode; 255=full current
 #define PID_MAX BANG_MAX // Limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #define PID_K1 0.95      // Smoothing factor within any PID loop
 
+
 #if ENABLED(PIDTEMP)
-  #define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
-                                  // Set/get with G-code: M301 E[extruder number, 0-2]
-
-  #if ENABLED(PID_PARAMS_PER_HOTEND)
-    // Specify up to one value per hotend here, according to your setup.
-    // If there are fewer values, the last one applies to the remaining hotends.
-    // E3D Titan Aero with normal block, volcano block, hexagon
-
-
-    #define DEFAULT_Kp_LIST {  21.0,  37.55,   28.79 }
-    #define DEFAULT_Ki_LIST {  1.78,   5.39,    1.91 }
-    #define DEFAULT_Kd_LIST { 61.93,  65.36,  108.51 }
-  #else
-    #define DEFAULT_Kp   21.0
-    #define DEFAULT_Ki   1.78
-    #define DEFAULT_Kd  61.93
+  #if DISABLED(NO_SCREEN)
+    #define PID_EDIT_MENU         // Add PID editing to the "Advanced Settings" menu. (~700 bytes of PROGMEM)
+    #define PID_AUTOTUNE_MENU     // Add PID auto-tuning to the "Advanced Settings" menu. (~250 bytes of PROGMEM)
   #endif
-#endif
+  #define TOOLHEAD_HS_HSPLUS
+  //#define PID_PARAMS_PER_HOTEND // Uses separate PID parameters for each extruder (useful for mismatched extruders)
+                                  // Set/get with gcode: M301 E[extruder number, 0-2]
+  
+  // If you are using a pre-configured hotend then you can use one of the value sets by uncommenting it
+
+  //TAZ 6 Single Extruder (W)
+    #define TAZ6_STD_DEFAULT_Kp 28.79        //used to define stock PID. NOTE: if values are changed, both sets need to be changed.
+    #define TAZ6_STD_DEFAULT_Ki 1.91         //NOTE: if values are changed, both sets need to be changed.
+    #define TAZ6_STD_DEFAULT_Kd 108.51
+    #define charTAZ6_STD_DEFAULT_Kp "28.79"  //used in the tool head menu gcode.
+    #define charTAZ6_STD_DEFAULT_Ki "1.91"
+    #define charTAZ6_STD_DEFAULT_Kd "108.51"
+
+  // E3D Titan Aero with LulzBot V6 block (40W)
+    #define SLSEHE_DEFAULT_Kp 21.0           //NOTE: if values are changed, both sets need to be changed.
+    #define SLSEHE_DEFAULT_Ki 1.78
+    #define SLSEHE_DEFAULT_Kd 61.93
+    #define charSLSEHE_DEFAULT_Kp "21.0"
+    #define charSLSEHE_DEFAULT_Ki "1.78"
+    #define charSLSEHE_DEFAULT_Kd "61.93"
+
+  // SK175 Tool head (30W)
+    #define SK175_DEFAULT_Kp 26.47           //NOTE: if values are changed, both sets need to be changed.
+    #define SK175_DEFAULT_Ki 2.32
+    #define SK175_DEFAULT_Kd 75.56
+    #define charSK175_DEFAULT_Kp "26.47"
+    #define charSK175_DEFAULT_Ki "2.32"
+    #define charSK175_DEFAULT_Kd "75.56"
+   
+  // SK285 Tool head (30W)
+    #define SK285_DEFAULT_Kp 26.90           //NOTE: if values are changed, both sets need to be changed.
+    #define SK285_DEFAULT_Ki 2.41
+    #define SK285_DEFAULT_Kd 75.19
+    #define charSK285_DEFAULT_Kp "26.90"
+    #define charSK285_DEFAULT_Ki "2.41"
+    #define charSK285_DEFAULT_Kd "75.19"
+
+  // H175 Tool head (40W)
+    #define H175_DEFAULT_Kp 27.58            //NOTE: if values are changed, both sets need to be changed.
+    #define H175_DEFAULT_Ki 3.22
+    #define H175_DEFAULT_Kd 65.66
+    #define charH175_DEFAULT_Kp "27.58" 
+    #define charH175_DEFAULT_Ki "3.22"
+    #define charH175_DEFAULT_Kd "65.66"
+
+  // M175 Tool head (50W)
+    #define M175_DEFAULT_Kp 22.12            //NOTE: if values are changed, both sets need to be changed.
+    #define M175_DEFAULT_Ki 1.94
+    #define M175_DEFAULT_Kd 63.59
+    #define charM175_DEFAULT_Kp "22.12"
+    #define charM175_DEFAULT_Ki "1.94"
+    #define charM175_DEFAULT_Kd "63.59"
+
+  // HS & HSPLUS Tool heads  
+    #define HSHSPLUS_DEFAULT_Kp 37.55        //NOTE: if values are changed, both sets need to be changed.
+    #define HSHSPLUS_DEFAULT_Ki 5.39
+    #define HSHSPLUS_DEFAULT_Kd 65.36
+    #define charHSHSPLUS_DEFAULT_Kp "37.55"
+    #define charHSHSPLUS_DEFAULT_Ki "5.39"
+    #define charHSHSPLUS_DEFAULT_Kd "65.36"
+  
+  #if ENABLED(PID_PARAMS_PER_HOTEND)
+    // Specify between 1 and HOTENDS values per array.
+    // If fewer than EXTRUDER values are provided, the last element will be repeated.
+    #define DEFAULT_Kp_LIST { TAZ6_STD_DEFAULT_Kp, SLSEHE_DEFAULT_Kp, HSHSPLUS_DEFAULT_Kp, H175_DEFAULT_Kp, M175_DEFAULT_Kp}
+    #define DEFAULT_Ki_LIST { TAZ6_STD_DEFAULT_Ki, SLSEHE_DEFAULT_Ki, HSHSPLUS_DEFAULT_Ki, H175_DEFAULT_Ki, M175_DEFAULT_Ki}
+    #define DEFAULT_Kd_LIST { TAZ6_STD_DEFAULT_Kd, SLSEHE_DEFAULT_Kd, HSHSPLUS_DEFAULT_Kd, H175_DEFAULT_Kd, M175_DEFAULT_Kd}
+  
+  #else
+    // Sets default PID based on which printer/toolhead is selected
+    #if ENABLED(TAZ6) // Taz 6 Standard toolhead 
+      #define DEFAULT_Kp  TAZ6_STD_DEFAULT_Kp
+      #define DEFAULT_Ki  TAZ6_STD_DEFAULT_Ki
+      #define DEFAULT_Kd  TAZ6_STD_DEFAULT_Kd
+    
+    #elif ANY(TOOLHEAD_SL_SE_HE, LULZBOT_E3D_Titan_Aero_V6, LULZBOT_UNIVERSAL_TOOLHEAD)
+      #define DEFAULT_Kp  SLSEHE_DEFAULT_Kp
+      #define DEFAULT_Ki  SLSEHE_DEFAULT_Ki
+      #define DEFAULT_Kd  SLSEHE_DEFAULT_Kd    
+    
+    #elif ENABLED(TOOLHEAD_SK175)
+      #define DEFAULT_Kp SK175_DEFAULT_Kp
+      #define DEFAULT_Ki SK175_DEFAULT_Ki
+      #define DEFAULT_Kd SK175_DEFAULT_Kd
+      
+    #elif ENABLED(TOOLHEAD_SK285)
+      #define DEFAULT_Kp SK285_DEFAULT_Kp
+      #define DEFAULT_Ki SK285_DEFAULT_Ki
+      #define DEFAULT_Kd SK285_DEFAULT_Kd
+    
+    #elif ENABLED(TOOLHEAD_H175)
+      #define DEFAULT_Kp H175_DEFAULT_Kp
+      #define DEFAULT_Ki H175_DEFAULT_Ki
+      #define DEFAULT_Kd H175_DEFAULT_Kd
+    
+    #elif ENABLED(TOOLHEAD_M175)
+      #define DEFAULT_Kp M175_DEFAULT_Kp
+      #define DEFAULT_Ki M175_DEFAULT_Ki
+      #define DEFAULT_Kd M175_DEFAULT_Kd
+
+    #elif ANY(TOOLHEAD_HS_HSPLUS)
+      #define DEFAULT_Kp HSHSPLUS_DEFAULT_Kp 
+      #define DEFAULT_Ki HSHSPLUS_DEFAULT_Ki 
+      #define DEFAULT_Kd HSHSPLUS_DEFAULT_Kd 
+    #endif
+  #endif
+#endif // PIDTEMP
+
 
 /**
  * Model Predictive Control for hotend
@@ -762,9 +866,10 @@
 
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 294
-  #define DEFAULT_bedKi 65
-  #define DEFAULT_bedKd 382
+
+  #define DEFAULT_bedKp 384.33 // <-- changed
+  #define DEFAULT_bedKi 72.17 // <-- changed
+  #define DEFAULT_bedKd 511.64 // <-- changed
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
@@ -1168,7 +1273,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-//#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 //#define USE_PROBE_FOR_Z_HOMING
@@ -1188,7 +1293,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-#define Z_MIN_PROBE_PIN 10 // Pin 32 is the RAMPS default
+//#define Z_MIN_PROBE_PIN 10 // Pin 32 is the RAMPS default
 
 /**
  * Probe Type
@@ -1328,7 +1433,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET {0, 0, -1.5 }
+#define NOZZLE_TO_PROBE_OFFSET {0, 0, -0.15 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1414,7 +1519,7 @@
 #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -1 // Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20
@@ -1552,7 +1657,7 @@
 #define Z_MIN_POS -2
 #define X_MAX_POS (163 + 0)
 #define Y_MAX_POS (192 + 0)
-#define Z_MAX_POS (157 + 0) //159 not reliable
+#define Z_MAX_POS (159 + 0) //159 not reliable
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -2132,8 +2237,10 @@
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #define NOZZLE_CLEAN_START_POINT { 35 + 0, 177 + 0, .8 }
-  #define NOZZLE_CLEAN_END_POINT   { 114 + 0, 182 + 0, .8 }
+  //#define NOZZLE_CLEAN_START_POINT {{ 35.01 + 0, 177 + 0, .8 },{ 35.02 + 0, 177 + 0, .8 },{ 35.03 + 0, 177 + 0, .8 },{ 35.04 + 0, 177 + 0, .8 },{ 35.05 + 0, 177 + 0, .8 }}
+  //#define NOZZLE_CLEAN_END_POINT   {{ 114.01 + 0, 182 + 0, .8 },{ 114.02 + 0, 182 + 0, .8 },{ 114.03 + 0, 182 + 0, .8 },{ 114.04 + 0, 182 + 0, .8 },{ 114.05 + 0, 182 + 0, .8 }}
+  #define NOZZLE_CLEAN_START_POINT { 35.01 + 0, 177 + 0, .8 }
+  #define NOZZLE_CLEAN_END_POINT   { 114.01 + 0, 182 + 0, .8 }
 
   // Circular pattern radius
   #define NOZZLE_CLEAN_CIRCLE_RADIUS 6.5

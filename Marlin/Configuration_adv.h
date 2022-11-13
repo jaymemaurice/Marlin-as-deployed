@@ -2755,10 +2755,10 @@
   #define INTERPOLATE      true
 
   #if AXIS_IS_TMC(X)
-    #define X_CURRENT       1000        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       920        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
-    #define X_RSENSE          0.22
+    #define X_RSENSE          0.12
     #define X_CHAIN_POS      -1        // -1..0: Not chained. 1: MCU MOSI connected. 2: Next in chain, ...
     //#define X_INTERPOLATE  true      // Enable to override 'INTERPOLATE' for the X axis
     //#define X_HOLD_MULTIPLIER 0.5    // Enable to override 'HOLD_MULTIPLIER' for the X axis
@@ -2775,7 +2775,7 @@
   #endif
 
   #if AXIS_IS_TMC(Y)
-    #define Y_CURRENT       1000
+    #define Y_CURRENT       920
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     16
     #define Y_RSENSE          X_RSENSE
@@ -2795,7 +2795,7 @@
   #endif
 
   #if AXIS_IS_TMC(Z)
-    #define Z_CURRENT       800
+    #define Z_CURRENT       960
     #define Z_CURRENT_HOME   Z_CURRENT
     #define Z_MICROSTEPS     32
     #define Z_RSENSE          X_RSENSE
@@ -3176,7 +3176,7 @@
    *
    * Comment *_STALL_SENSITIVITY to disable sensorless homing for that axis.
    */
-  #define SENSORLESS_HOMING // StallGuard capable drivers only
+  //#define SENSORLESS_HOMING // StallGuard capable drivers only
 
   #if EITHER(SENSORLESS_HOMING, SENSORLESS_PROBING)
     // TMC2209: 0...255. TMC2130: -64...63
@@ -3184,8 +3184,8 @@
     //#define X2_STALL_SENSITIVITY X_STALL_SENSITIVITY
     //#define Y_STALL_SENSITIVITY  8
     //#define Y2_STALL_SENSITIVITY Y_STALL_SENSITIVITY
-    #define Z_STALL_SENSITIVITY  4
-    #define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
+    //#define Z_STALL_SENSITIVITY  4
+    //#define Z2_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define Z3_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define Z4_STALL_SENSITIVITY Z_STALL_SENSITIVITY
     //#define I_STALL_SENSITIVITY  8
@@ -3194,7 +3194,7 @@
     //#define U_STALL_SENSITIVITY  8
     //#define V_STALL_SENSITIVITY  8
     //#define W_STALL_SENSITIVITY  8
-    #define SPI_ENDSTOPS              // TMC2130 only
+    //#define SPI_ENDSTOPS              // TMC2130 only
     //#define IMPROVE_HOMING_RELIABILITY
   #endif
 
@@ -4008,35 +4008,51 @@
   //#define MAIN_MENU_ITEM_5_GCODE "G28\nM503"
   //#define MAIN_MENU_ITEM_5_CONFIRM
 #endif
+#define LULZBOT_UNIVERSAL_TOOLHEAD
+#if defined(LULZBOT_UNIVERSAL_TOOLHEAD)
+  
+  #define CUSTOM_MENU_CONFIG
 
-// Custom Menu: Configuration Menu
-//#define CUSTOM_MENU_CONFIG
-#if ENABLED(CUSTOM_MENU_CONFIG)
-  //#define CUSTOM_MENU_CONFIG_TITLE "Custom Commands"
-  #define CUSTOM_MENU_CONFIG_SCRIPT_DONE "M117 Wireless Script Done"
-  #define CUSTOM_MENU_CONFIG_SCRIPT_AUDIBLE_FEEDBACK
-  //#define CUSTOM_MENU_CONFIG_SCRIPT_RETURN  // Return to status screen after a script
-  #define CUSTOM_MENU_CONFIG_ONLY_IDLE        // Only show custom menu when the machine is idle
+  #if ENABLED(CUSTOM_MENU_CONFIG)
+    #define CUSTOM_MENU_CONFIG_TITLE "Tool Heads"
+    //#define CUSTOM_MENU_CONFIG_SCRIPT_DONE "M117 Tool Changed"
+    #define CUSTOM_MENU_CONFIG_SCRIPT_AUDIBLE_FEEDBACK
+    #define CUSTOM_MENU_CONFIG_SCRIPT_RETURN  // Return to status screen after a script
+    #define CUSTOM_MENU_CONFIG_ONLY_IDLE         // Only show custom menu when the machine is idle
 
-  #define CONFIG_MENU_ITEM_1_DESC "Wifi ON"
-  #define CONFIG_MENU_ITEM_1_GCODE "M118 [ESP110] WIFI-STA pwd=12345678"
-  //#define CONFIG_MENU_ITEM_1_CONFIRM        // Show a confirmation dialog before this action
+    #define TAZ6_DEFAULT_PID "P28.79I1.91D108.51"
+    #define DEFAULT_PID "P21.0I1.78D61.93"
 
-  #define CONFIG_MENU_ITEM_2_DESC "Bluetooth ON"
-  #define CONFIG_MENU_ITEM_2_GCODE "M118 [ESP110] BT pwd=12345678"
-  //#define CONFIG_MENU_ITEM_2_CONFIRM
+    #define E_CURRENT_Aero "960"
+    #define E_CURRENT_BMG  "960"
+    #define E_CURRENT_Std  "925"
 
-  //#define CONFIG_MENU_ITEM_3_DESC "Radio OFF"
-  //#define CONFIG_MENU_ITEM_3_GCODE "M118 [ESP110] OFF pwd=12345678"
-  //#define CONFIG_MENU_ITEM_3_CONFIRM
 
-  //#define CONFIG_MENU_ITEM_4_DESC "Wifi ????"
-  //#define CONFIG_MENU_ITEM_4_GCODE "M118 ????"
-  //#define CONFIG_MENU_ITEM_4_CONFIRM
+    #define CONFIG_MENU_ITEM_3_DESC "M175v2|0.50mm|CRB CU"
+    #define CONFIG_MENU_ITEM_3_GCODE "M92E415\nM206Y0\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM907E" E_CURRENT_BMG "\nM412 S1\nM500\nM117 M175v2|0.50mm|CRB CU"
 
-  //#define CONFIG_MENU_ITEM_5_DESC "Wifi ????"
-  //#define CONFIG_MENU_ITEM_5_GCODE "M118 ????"
-  //#define CONFIG_MENU_ITEM_5_CONFIRM
+    #define CONFIG_MENU_ITEM_4_DESC "SL|0.25mm|NKL-PL CU"
+    #define CONFIG_MENU_ITEM_4_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 SL|0.25mm|NKL-PL CU"
+      
+    #define CONFIG_MENU_ITEM_5_DESC "SE|0.50mm|NKL-PL CU"
+    #define CONFIG_MENU_ITEM_5_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 SE|0.50mm|NKL-PL CU"
+
+    #define CONFIG_MENU_ITEM_6_DESC "HE|0.50mm|HRD STEEL"
+    #define CONFIG_MENU_ITEM_6_GCODE "M92E420\nM206Y0\nM301P" charSLSEHE_DEFAULT_Kp "I" charSLSEHE_DEFAULT_Ki "D" charSLSEHE_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HE|0.50mm|HRD STEEL"
+
+    #define CONFIG_MENU_ITEM_7_DESC "HS|0.80mm|HRD STEEL"
+    #define CONFIG_MENU_ITEM_7_GCODE "M92E420\nM206Y0\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HS|0.80mm|HRD STEEL"
+
+    #define CONFIG_MENU_ITEM_8_DESC "HS+|1.20mm|HRD STEEL"
+    #define CONFIG_MENU_ITEM_8_GCODE "M92E420\nM206Y0\nM301P" charHSHSPLUS_DEFAULT_Kp "I" charHSHSPLUS_DEFAULT_Ki "D" charHSHSPLUS_DEFAULT_Kd "\nM907E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 HS+|1.20mm|HRD STEEL"
+
+    #define CONFIG_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
+    #define CONFIG_MENU_ITEM_9_GCODE "M92E409\nM206Y0\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 H175|0.50mm|NKL-PL CU"
+
+    #define CONFIG_MENU_ITEM_1_DESC "Standard|0.5mm"
+    #define CONFIG_MENU_ITEM_1_GCODE "M92E833\nM206Y4\nM301P" charTAZ6_STD_DEFAULT_Kp "I" charTAZ6_STD_DEFAULT_Ki "D" charTAZ6_STD_DEFAULT_Kd "\nM907E" E_CURRENT_Std "\nM412 S0\nM500\nM117 Standard|0.5mm"
+ 
+  #endif
 #endif
 
 /**
